@@ -5,7 +5,9 @@ import Login from "./pages/Login";
 import ForgotPassword from './pages/Password';
 import Register from "./pages/Register";
 import Products from './components/skeleton/Products'
+import Dashboard from "./layouts/Dashboard";
 import { AppContext } from "./Context/appContext";
+import EditProfile from "./layouts/EditingDashboard";
 function App() {
 
   return (   
@@ -21,6 +23,8 @@ function App() {
           <Route path="shops"/>
           <Route path="myCart"/>
           <Route path="myShop"/>
+          <Route path="profile" element={<Dashboard/>}/>
+          <Route path="profile/edit" element={<EditProfile/>}/>
         </Route>
       </Routes>
       </AppContext>

@@ -63,6 +63,89 @@
     border-radius: 50%;
 }
 
+.profile-container{
+    position:relative;
+}
+
+.profile {
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    overflow:hidden;
+    cursor:pointer;
+    background:#e0e0e0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.profile img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile:hover{
+    background:#d5d5d5;
+}
+
+.profile-dropdown{
+    position:absolute;
+    right:0;
+    top:65px;
+    width:230px;
+
+    background:white;
+    border-radius:12px;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.12);
+
+    overflow:hidden;
+
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-10px);
+    transition:.25s ease;
+
+    z-index:1001;
+}
+
+.profile-dropdown.show{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+}
+
+.profile-dropdown a{
+    display:block;
+    padding:14px 18px;
+    color:#444;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.profile-dropdown a:hover{
+    background:#f3f6ff;
+    color:#2563eb;
+}
+
+.profile-dropdown button{
+    width:100%;
+    border:none;
+    background:white;
+    text-align:left;
+    padding:14px 18px;
+    cursor:pointer;
+    color:#d32f2f;
+    font-size:15px;
+    border-top:1px solid #eee;
+    transition:.2s;
+}
+
+.profile-dropdown button:hover{
+    background:#fff1f1;
+}
+
 /* ---------- Tablet ---------- */
 
 @media (max-width:900px) {

@@ -6,6 +6,8 @@ const appContext = createContext();
 
 export const AppContext = ({ children }) => {
 
+  const server = import.meta.env.VITE_SERVER;
+
   const [user, setUser] = useState({
     isLogin: false
   });
@@ -18,7 +20,7 @@ export const AppContext = ({ children }) => {
 
       try {
 
-        const response = await axios.get(`${import.meta.env.VITE_SERVER}/getUser`,
+        const response = await axios.get(`${server}/getImage`,
           {
             withCredentials: true
           }
@@ -30,7 +32,7 @@ export const AppContext = ({ children }) => {
         setUser({ isLogin: false });
         if (error.response) {
           switch (error.response.status) {
-            case 401: showToast("Please log in.", "warning");
+            case 401: showToast(error.response.data.message, "warning");
               break;
             case 403: showToast("Please Login First.", "error");
               break;
@@ -43,12 +45,13 @@ export const AppContext = ({ children }) => {
       }
     };
 
-    fetchUser();
+    
 
+    fetchUser();
   }, []);
 
   return (
-    <appContext.Provider value={{ user }}>
+    <appContext.Provider value={{ user, server }}>
       {children}
     </appContext.Provider>
   );
