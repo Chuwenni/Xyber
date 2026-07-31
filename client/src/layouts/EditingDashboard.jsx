@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useApp } from "../Context/appContext"
+import { useToast } from "../Context/ToastContext";
 import axios from "axios"
 
 export default function EditProfile() {
 
-    const { user, server} = useApp();
+    const { user, fetchUser, setUser, server} = useApp();
 
-    const [username, setUsername] = useState("Christian");
+    const { showToast } = useToast();
 
-    const [preview, setPreview] = useState(null);
+    const [username, setUsername] = useState(user.username);
+
+    const [preview, setPreview] = useState(user.profile);
 
     const [image, setImage] = useState(null);
 
@@ -39,10 +42,11 @@ export default function EditProfile() {
              }
             )
 
-            console.log(response)
+            await fetchUser()
 
+            showToast(response.data.message, response.data.type);
         }catch(error){
-            console.log(error)
+            showToast(error.message, "error")
         }
     };
 
@@ -61,7 +65,7 @@ export default function EditProfile() {
                         <img
                             src={
                                 preview ||
-                                "https://placehold.co/150x150/E0E0E0/555?text=Profile"
+                                user.profile
                             }
                             alt="Profile"
                             className="profile-preview"
@@ -90,7 +94,7 @@ export default function EditProfile() {
 
                         <input
                             type="text"
-                            value={user.username}
+                            value={username}
                             onChange={(e) =>
                                 setUsername(e.target.value)
                             }

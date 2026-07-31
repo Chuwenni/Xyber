@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "../Context/ToastContext";
+import { useApp } from "../Context/appContext"
 import axios from 'axios';
 
 export default function Login() {
@@ -9,6 +10,8 @@ export default function Login() {
         password: "",
         remember: false,
     });
+
+    const { user, fetchUser} = useApp();
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -38,6 +41,7 @@ export default function Login() {
             if (response.data.type != "success") {
                 showToast(message, type);
             } else {
+                await fetchUser();
                 showToast(message, type);
                 setTimeout(() => {
                     navigate('/home', { replace: true });

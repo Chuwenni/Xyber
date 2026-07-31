@@ -52,7 +52,7 @@ export default function Menubar() {
                         className="profile"
                         onClick={() => setShowMenu(!showMenu)}
                     >
-                        <img src={user.profile.image} alt="profile" />
+                        <img src={user.profile} alt="profile" />
                     </div>
 
                     <div className={`profile-dropdown ${showMenu ? "show" : ""}`}>
@@ -61,32 +61,32 @@ export default function Menubar() {
                             to="/home/profile"
                             onClick={() => setShowMenu(false)}
                         >
-                            👤 My Profile
+                             My Profile
                         </NavLink>
 
                         <NavLink
                             to="/home/settings"
                             onClick={() => setShowMenu(false)}
                         >
-                            ⚙ Account Settings
+                             Account Settings
                         </NavLink>
 
                         <NavLink
                             to="/home/orders"
                             onClick={() => setShowMenu(false)}
                         >
-                            📦 My Orders
+                             My Orders
                         </NavLink>
 
                         <NavLink
                             to="/home/wishlist"
                             onClick={() => setShowMenu(false)}
                         >
-                            ❤️ Wishlist
+                             Wishlist
                         </NavLink>
 
                         <button onClick={logout}>
-                            🚪 Sign Out
+                             Sign Out
                         </button>
 
                     </div>

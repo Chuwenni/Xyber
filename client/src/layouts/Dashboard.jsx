@@ -10,7 +10,7 @@ export default function Dashboard() {
             <section className="dashboard-header">
 
                 <div>
-                    <h1>Welcome Back 👋</h1>
+                    <h1>Welcome Back {user.username}</h1>
                     <p>Manage your account and keep track of your orders.</p>
                 </div>
 

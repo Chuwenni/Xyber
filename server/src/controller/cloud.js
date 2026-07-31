@@ -4,22 +4,42 @@ const Image = require("../models/imageSchema")
 const uploadImage = async (req, res) => {
     try{
 
+        const userImage = await Image.findOne({user: req.user.email})
+
+        
+        if(!userImage){
+            const uploadedImage = await cloud.uploader.upload(req.file.path, {
+                folder: "images"
+            })
+            
+            const imageDB = await Image.create({
+                user: req.user.email,
+                image: uploadedImage.secure_url,
+                imageId: uploadedImage.public_id
+            })
+
+            if(!imageDB){
+                return res.status(400).json({message: "Failed to Change Images", type: "error"})
+            }
+    
+            return res.status(201).json({message: "Profile Changed successfuly!", type: "success"})
+        }
+
+        await cloud.uploader.destroy(userImage.imageId)
+        
         const uploadedImage = await cloud.uploader.upload(req.file.path, {
             folder: "images"
         })
 
-        const imageDB = await Image.create({
-            user: req.user.email,
-            image: uploadedImage.secure_url,
-            imageId: uploadedImage.public_id
-        })
+        userImage.image = uploadedImage.secure_url
+        userImage.imageId = uploadedImage.public_id
 
-        if(!imageDB){
-            return res.status(400).json({message: "Failed to Change Images", type: "error"})
-        }
+        userImage.save()
 
-        res.status(201).json({message: "Profile Changed successfuly!", type: "success"})
+        return res.status(200).json({message: "Profile Picture Changed!", type: "success"})
+
     }catch(error){
+        console.log(error)
         return res.status(500).json({message: error.message})
     }
 }
@@ -29,11 +49,7 @@ const getImage = async (req, res) => {
         console.log(req.user)
         const image = await Image.findOne({user: req.user.email})
 
-        if(!image){
-            return res.status(404).json({message: "No Profile Picture Found in your  Account", type: "error"})
-        }
-
-        const user = {...req.user, profile: image}
+        const user = {...req.user, profile: image ? image.image : null}
 
         return res.json({message: " ", type: "success", user: {...user, isLogin: true}})
     }catch(error){

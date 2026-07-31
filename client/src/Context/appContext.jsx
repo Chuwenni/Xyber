@@ -12,46 +12,43 @@ export const AppContext = ({ children }) => {
     isLogin: false
   });
 
-  const {showToast} = useToast();
+  const { showToast } = useToast();
 
-  useEffect(() => {
+  const fetchUser = async () => {
 
-    const fetchUser = async () => {
+    try {
 
-      try {
+      const response = await axios.get(`${server}/getImage`,
+        {
+          withCredentials: true
+        }
+      );
 
-        const response = await axios.get(`${server}/getImage`,
-          {
-            withCredentials: true
-          }
-        );
+      setUser(response.data.user);
 
-        setUser(response.data.user);
-
-      } catch (error) {
-        setUser({ isLogin: false });
-        if (error.response) {
-          switch (error.response.status) {
-            case 401: showToast(error.response.data.message, "warning");
-              break;
-            case 403: showToast("Please Login First.", "error");
-              break;
-            case 404: showToast("User not found.", "error");
-              break;
-            case 500: showToast("Internal server error.", "error");
-              break;
-          }
+    } catch (error) {
+      setUser({ isLogin: false });
+      if (error.response) {
+        switch (error.response.status) {
+          case 401: showToast(error.response.data.message, "warning");
+            break;
+          case 403: showToast("Please Login First.", "error");
+            break;
+          case 404: showToast("User not found.", "error");
+            break;
+          case 500: showToast("Internal server error.", "error");
+            break;
         }
       }
-    };
+    }
+  };
 
-    
-
+  useEffect(() => {
     fetchUser();
   }, []);
 
   return (
-    <appContext.Provider value={{ user, server }}>
+    <appContext.Provider value={{ user, fetchUser, setUser, server }}>
       {children}
     </appContext.Provider>
   );
