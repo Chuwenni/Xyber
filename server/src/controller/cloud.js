@@ -1,11 +1,13 @@
 const cloud = require("../config/cloudConfig")
 const Image = require("../models/imageSchema")
-
+const User = require("../models/userSchema")
 const uploadImage = async (req, res) => {
     try{
-
         const userImage = await Image.findOne({user: req.user.email})
-
+        const userDB = await User.findOneAndUpdate(
+            { username: req.user.username}, 
+            { $set: { username: req.body.username}}
+        )
         
         if(!userImage){
             const uploadedImage = await cloud.uploader.upload(req.file.path, {
@@ -46,7 +48,6 @@ const uploadImage = async (req, res) => {
 
 const getImage = async (req, res) => {
     try{
-        console.log(req.user)
         const image = await Image.findOne({user: req.user.email})
 
         const user = {...req.user, profile: image ? image.image : null}

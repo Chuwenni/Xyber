@@ -20,7 +20,7 @@ const Login = async (req,res) => {
         if(!userDB) return res.json({message: "User not Found", type: "error"})
 
         const payload = {
-            email: userDB.email, username: userDB.username, id: userDB._id
+            email: userDB.email, username: userDB.username, id: userDB._id, role: userDB.role
         }
         
         const isMatch = await bcrypt.compare(password, userDB.password);

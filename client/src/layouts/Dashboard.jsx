@@ -2,7 +2,9 @@ import { useApp } from "../Context/appContext";
 import { Link } from "react-router-dom";
 export default function Dashboard() {
 
-    const { user } = useApp();
+    const { user, fetchUser } = useApp();
+
+    fetchUser()
 
     return (
         <div className="dashboard-page">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"
 import { useApp } from "../Context/appContext"
 import { useToast } from "../Context/ToastContext";
 import axios from "axios"
@@ -7,7 +8,9 @@ export default function EditProfile() {
 
     const { user, fetchUser, setUser, server} = useApp();
 
-    const { showToast } = useToast();
+    const navigate = useNavigate();
+
+    const { showToast, durations } = useToast();
 
     const [username, setUsername] = useState(user.username);
 
@@ -31,6 +34,7 @@ export default function EditProfile() {
         const form = new FormData();
 
         form.append("image", image)
+        form.append("username", username)
         try{
             const response = await axios.post(`${server}/imageUpload`, 
              form,
@@ -45,6 +49,9 @@ export default function EditProfile() {
             await fetchUser()
 
             showToast(response.data.message, response.data.type);
+            setTimeout(() =>{
+                navigate("/home/profile", {replace: true})
+            }, durations.success)
         }catch(error){
             showToast(error.message, "error")
         }

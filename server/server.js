@@ -9,14 +9,6 @@ const Connect = require("./src/config/database")
 const cloud = require("./src/config/cloudConfig")
 Connect();
 
-console.log(cloud.config());
-
-app.use((req,res,next)=>{
-    console.log("REQUEST:", req.method, req.url);
-    console.log("ORIGIN:", req.headers.origin);
-    next();
-});
-
 app.use(cors(corsConfig))
 
 app.use(express.json());
