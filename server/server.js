@@ -18,6 +18,7 @@ app.use(cookieparser());
 
 app.use(require("./src/routes/authentication"))
 app.use(require("./src/routes/credentials"))
+app.use(require("./src/routes/sellingRoutes"))
 app.use(require("./src/routes/cloud"))
 
 app.get("/", (req,res) => {

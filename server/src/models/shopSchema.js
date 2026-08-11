@@ -10,9 +10,18 @@ const shopSchema = mongoose.Schema({
     shopDescription: {
         type: String,
     },
-    follower: Number,
-    sales: Number,
-    rating: Number
+    follower: {
+       type: Number,
+       default: 0
+    },
+    sales: {
+        type: Number,
+        default: 0
+    },
+    rating: {
+        type: Number,
+        default: 0
+    }
 })
 
 const shop = mongoose.model('Shop', shopSchema)

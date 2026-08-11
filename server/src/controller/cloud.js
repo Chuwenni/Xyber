@@ -3,7 +3,7 @@ const Image = require("../models/imageSchema")
 const User = require("../models/userSchema")
 const uploadImage = async (req, res) => {
     try{
-        const userImage = await Image.findOne({user: req.user.email})
+        const userImage = await Image.findOne({user: req.user.email, type: "profile"})
         const userDB = await User.findOneAndUpdate(
             { username: req.user.username}, 
             { $set: { username: req.body.username}}
@@ -16,6 +16,7 @@ const uploadImage = async (req, res) => {
             
             const imageDB = await Image.create({
                 user: req.user.email,
+                type: "profile",
                 image: uploadedImage.secure_url,
                 imageId: uploadedImage.public_id
             })
@@ -48,7 +49,7 @@ const uploadImage = async (req, res) => {
 
 const getImage = async (req, res) => {
     try{
-        const image = await Image.findOne({user: req.user.email})
+        const image = await Image.findOne({user: req.user.email, type: "profile"})
 
         const user = {...req.user, profile: image ? image.image : null}
 

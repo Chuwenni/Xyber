@@ -47,6 +47,8 @@ export const AppContext = ({ children }) => {
     fetchUser();
   }, []);
 
+  console.log(user)
+
   return (
     <appContext.Provider value={{ user, fetchUser, setUser, server }}>
       {children}
