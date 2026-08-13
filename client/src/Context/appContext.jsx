@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useErrorHandler} from "../utils/useErrorHandler.js"
 import { useToast } from "./ToastContext";
 
 const appContext = createContext();
@@ -12,8 +13,8 @@ export const AppContext = ({ children }) => {
     isLogin: false
   });
 
-  const { showToast } = useToast();
-
+  const { handle } = useErrorHandler();
+  
   const fetchUser = async () => {
 
     try {
@@ -28,26 +29,13 @@ export const AppContext = ({ children }) => {
 
     } catch (error) {
       setUser({ isLogin: false });
-      if (error.response) {
-        switch (error.response.status) {
-          case 401: showToast(error.response.data.message, "warning");
-            break;
-          case 403: showToast("Please Login First.", "error");
-            break;
-          case 404: showToast("User not found.", "error");
-            break;
-          case 500: showToast("Internal server error.", "error");
-            break;
-        }
-      }
+      handle(error, "toast")
     }
   };
 
   useEffect(() => {
     fetchUser();
   }, []);
-
-  console.log(user)
 
   return (
     <appContext.Provider value={{ user, fetchUser, setUser, server }}>

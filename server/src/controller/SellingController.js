@@ -11,7 +11,7 @@ const getShop = async (req, res) => {
             return res.status(403).json({ message: "Seller Only Page! \tCreate a Shop to be a Seller", type: "warning" })
         }
 
-        const userShop = await Shop.findOne({ user: user.email }).lean();
+        const userShop = await Shop.findOne({ owner: user.email }).lean();
         const shopImage = await Image.findOne({ user: user.email, type: "shop" })
 
         if (!userShop) {
@@ -30,7 +30,6 @@ const createShop = async (req, res) => {
     try {
         const user = req.user;
         const userShop = await Shop.findOne({ user: user.email })
-        
         if (userShop) {
             return res.status(400).json({ message: "You already have a Shop!", type: "warning" })
         }
@@ -51,7 +50,7 @@ const createShop = async (req, res) => {
         })
 
         const shop = await Shop.create({
-            user: user.email,
+            owner: user.email,
             shopName: req.body.name,
             shopDescription: req.body.desc
         })

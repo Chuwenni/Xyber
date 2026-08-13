@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const shopSchema = mongoose.Schema({
-    user: String,
+    owner: String,
     shopName: {
         type: String,
         required: [true, "Shop Name required"],
@@ -21,6 +21,12 @@ const shopSchema = mongoose.Schema({
     rating: {
         type: Number,
         default: 0
+    },
+    products: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5,
     }
 })
 

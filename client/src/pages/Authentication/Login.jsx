@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "../Context/ToastContext";
-import { useApp } from "../Context/appContext"
+import { useToast } from "../../Context/ToastContext";
+import { useApp } from "../../Context/appContext"
 import axios from 'axios';
 
 export default function Login() {

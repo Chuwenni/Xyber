@@ -1,12 +1,17 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/MenuBar.css";
 import { useApp } from "../Context/appContext";
 import { useState, useRef, useEffect } from "react";
+import axios from "axios";
+import { useToast } from "../Context/ToastContext";
+import useErrorHandler from "../utils/useErrorHandler";
 
 export default function Menubar() {
 
-    const { user } = useApp();
-
+    const { user, server } = useApp();
+    const { showModal } = useToast();
+    const { handle } = useErrorHandler();
+    const navigate = useNavigate()
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef(null);
 
@@ -27,9 +32,20 @@ export default function Menubar() {
         };
     }, []);
 
-    const logout = () => {
-        // logout code here
-        console.log("Logout");
+    const logout = async () => {
+        try{
+            const response = await axios.delete(`${server}/logout`, {
+                withCredentials: true
+            })
+
+            const confirm = await showModal(response.data?.message, "ok", response.data?.type)
+
+            if(confirm){
+                navigate("/", {replace: true})
+            }
+        }catch(error){
+            handle(error, "toast")
+        }
     };
 
     return (

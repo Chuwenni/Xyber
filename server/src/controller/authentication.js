@@ -2,8 +2,9 @@ const User = require("../models/userSchema")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
-const genTokens = (payload) => {
-    const accessToken = jwt.sign(payload, process.env.ACCESS_SECRET, { expiresIn: "10m" })
+const genTokens = (payload, remember) => {
+    const expire = remember ? "365d" : "10m"
+    const accessToken = jwt.sign(payload, process.env.ACCESS_SECRET, { expiresIn: expire })
     const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, { expiresIn: "1d"})
     return {accessToken, refreshToken}
 }
@@ -28,7 +29,7 @@ const Login = async (req,res) => {
         if(!isMatch){
             return res.json({message: "Email or Password is incorrect", type: "warning"})
         }
-        const {accessToken, refreshToken} = genTokens(payload);
+        const {accessToken, refreshToken} = genTokens(payload, remember);
         res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'none' });
         res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'none' });
 
@@ -75,6 +76,12 @@ const Register = async (req, res) => {
     }
 }
 
+const Logout = async (req,res) => {
+    res.clearCookie("accessToken",{ httpOnly: true, secure: true, sameSite: 'none' })
+
+    return res.status(200).json({message: "Logout Successful!", type: "success"})
+}
+
 module.exports= {
-    Login, Register
+    Login, Register, Logout
 }

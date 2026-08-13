@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useApp } from "../Context/appContext";
-import { useToast } from "../Context/ToastContext";
+import { useApp } from "../../Context/appContext";
+import { useToast } from "../../Context/ToastContext";
 export default function CreateShop() {
 
     const [shopName, setShopName] = useState("");

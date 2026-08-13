@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./CreateProduct.css";
 
 export default function CreateProduct() {
 

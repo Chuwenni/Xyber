@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import "../assets/MenuBar.css";
-import Products from '../components/skeleton/Products'
-import Menubar from "../layouts/Menubar";
-import { useApp } from "../Context/appContext";
+import "../../assets/MenuBar.css";
+import Products from '../../components/skeleton/Products'
+import Menubar from "../../layouts/Menubar";
+import { useApp } from "../../Context/appContext";
 const MainHomepage = () => {
 
   const {user} = useApp()

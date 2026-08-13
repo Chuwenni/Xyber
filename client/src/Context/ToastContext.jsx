@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
-import Toast from "../components/toast";
-import Modal from "../components/Modal";
+import Toast from "../components/Notifications/toast";
+import Modal from "../components/Notifications/Modal";
+import "../assets/toast.css";
 
 const ToastContext = createContext();
 

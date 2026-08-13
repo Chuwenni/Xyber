@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Homepage from "./pages/Homepage";
-import MainHomepage from "./pages/Mainhomepage"
-import Login from "./pages/Login";
-import ForgotPassword from './pages/Password';
-import Register from "./pages/Register";
+import Homepage from "./pages/HomePage/Homepage";
+import MainHomepage from "./pages/HomePage/Mainhomepage"
+import Login from "./pages/Authentication/Login";
+import ForgotPassword from './pages/Authentication/Password';
+import Register from "./pages/Authentication/Register";
 import Products from './components/skeleton/Products'
-import Dashboard from "./pages/Dashboard";
-import EditProfile from "./pages/EditingDashboard";
-import ShopDashboard from "./pages/shopDashboard";
+import Dashboard from "./pages/UserDashBoard/Dashboard";
+import EditProfile from "./pages/UserDashBoard/EditingDashboard";
+import ShopDashboard from "./pages/ShopPage/shopDashboard";
 import { AppContext } from "./Context/appContext";
-import CreateShop from "./pages/CreateShop";
+import CreateShop from "./pages/ShopPage/CreateShop";
 function App() {
 
   return (

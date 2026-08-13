@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react"
 import axios from "axios";
-import ShopSection from "../layouts/shopDashboard";
-import { useApp } from "../Context/appContext";
-import { useToast } from "../Context/ToastContext";
+import ShopSection from "../../layouts/shopDashboard";
+import { useApp } from "../../Context/appContext";
+import { useToast } from "../../Context/ToastContext";
 export default function ShopDashboard() {
     
     const { user, server } = useApp();

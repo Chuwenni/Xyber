@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { useApp } from "../Context/appContext"
-import { useToast } from "../Context/ToastContext";
+import { useApp } from "../../Context/appContext"
+import { useToast } from "../../Context/ToastContext";
 import axios from "axios"
 
 export default function EditProfile() {
