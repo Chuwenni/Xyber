@@ -36,7 +36,6 @@ export default function ShopDashboard() {
         fetchShop()
     }, [])
     
-    console.log(shop)
     return (
         <>
             {!shop ?

@@ -1,5 +1,8 @@
 import { useState } from "react";
-
+import { useToast } from "../../Context/ToastContext"
+import { useApp } from "../../Context/appContext"
+import { useErrorHandler } from "../../hooks/useErrorHandler"
+import axios from "axios"
 export default function CreateProduct() {
 
     const [product, setProduct] = useState({
@@ -12,13 +15,16 @@ export default function CreateProduct() {
 
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
-
     const handleChange = (e) => {
         setProduct({
             ...product,
             [e.target.name]: e.target.value
         });
     };
+
+    const { server } = useApp()
+    const { showModal } = useToast();
+    const { handle } = useErrorHandler();
 
     const handleImage = (e) => {
 
@@ -30,11 +36,32 @@ export default function CreateProduct() {
         setPreview(URL.createObjectURL(file));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(product);
-        console.log(image);
+        if (!image) {
+            showModal("Please Select an Image for The Products", "ok", "warning")
+            return
+        }
+
+        const form = new FormData();
+
+        form.append("name", product.name);
+        form.append("description", product.description);
+        form.append("category", product.category);
+        form.append("price", product.price);
+        form.append("stock", product.stock);
+        form.append("image", image);
+        try {
+            const response = await axios.post(`${server}/newProduct`,
+                form,
+                {
+                    withCredentials: true
+                })
+            showModal(response.data?.message, "ok", response.data?.type)
+        } catch (error) {
+            handle(error, "modal")
+        }
     };
 
     return (

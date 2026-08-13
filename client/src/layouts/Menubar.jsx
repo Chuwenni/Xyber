@@ -1,10 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import "../assets/MenuBar.css";
+import "../assets/HomePage.css";
 import { useApp } from "../Context/appContext";
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import { useToast } from "../Context/ToastContext";
-import useErrorHandler from "../utils/useErrorHandler";
+import useErrorHandler from "../hooks/useErrorHandler";
+import axios from "axios";
 
 export default function Menubar() {
 
@@ -33,17 +33,17 @@ export default function Menubar() {
     }, []);
 
     const logout = async () => {
-        try{
+        try {
             const response = await axios.delete(`${server}/logout`, {
                 withCredentials: true
             })
 
             const confirm = await showModal(response.data?.message, "ok", response.data?.type)
 
-            if(confirm){
-                navigate("/", {replace: true})
+            if (confirm) {
+                navigate("/", { replace: true })
             }
-        }catch(error){
+        } catch (error) {
             handle(error, "toast")
         }
     };
@@ -77,32 +77,32 @@ export default function Menubar() {
                             to="/home/profile"
                             onClick={() => setShowMenu(false)}
                         >
-                             My Profile
+                            My Profile
                         </NavLink>
 
                         <NavLink
                             to="/home/settings"
                             onClick={() => setShowMenu(false)}
                         >
-                             Account Settings
+                            Account Settings
                         </NavLink>
 
                         <NavLink
                             to="/home/orders"
                             onClick={() => setShowMenu(false)}
                         >
-                             My Orders
+                            My Orders
                         </NavLink>
 
                         <NavLink
                             to="/home/wishlist"
                             onClick={() => setShowMenu(false)}
                         >
-                             Wishlist
+                            Wishlist
                         </NavLink>
 
                         <button onClick={logout}>
-                             Sign Out
+                            Sign Out
                         </button>
 
                     </div>

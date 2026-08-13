@@ -4,12 +4,13 @@ import MainHomepage from "./pages/HomePage/Mainhomepage"
 import Login from "./pages/Authentication/Login";
 import ForgotPassword from './pages/Authentication/Password';
 import Register from "./pages/Authentication/Register";
-import Products from './components/skeleton/Products'
+import Products from "./layouts/Products";
 import Dashboard from "./pages/UserDashBoard/Dashboard";
 import EditProfile from "./pages/UserDashBoard/EditingDashboard";
 import ShopDashboard from "./pages/ShopPage/shopDashboard";
 import { AppContext } from "./Context/appContext";
 import CreateShop from "./pages/ShopPage/CreateShop";
+import CreateProduct from "./pages/ShopPage/Createproduct";
 function App() {
 
   return (
@@ -21,11 +22,12 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/password' element={<ForgotPassword />} />
           <Route path="/home" element={<Homepage />}>
-            <Route index element={<Products count={20} />} />
+            <Route index element={<Products />} />
             <Route path="shops" />
             <Route path="myCart" />
-            <Route path="myShop" element={<ShopDashboard />}/>
-            <Route path="myShop/create" element={<CreateShop/>}/>
+            <Route path="myShop" element={<ShopDashboard />} />
+            <Route path="myShop/create" element={<CreateShop />} />
+            <Route path="myShop/createProduct" element={<CreateProduct/>}/>
             <Route path="profile" element={<Dashboard />} />
             <Route path="profile/edit" element={<EditProfile />} />
           </Route>

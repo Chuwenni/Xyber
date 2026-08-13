@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const ShopSection = ({shop} = props) => {
+const ShopSection = ({ shop } = props) => {
 
     return (
         <div className="shop-dashboard-page">
@@ -56,7 +56,7 @@ const ShopSection = ({shop} = props) => {
                 </div>
                 <div className="shop-actions">
                     <Link to="/home/shop/products" className="secondary-btn">Manage Products</Link>
-                    <Link to="/home/shop/add-product" className="primary-btn">Add New Product</Link>
+                    <Link to="/home/myShop/createProduct" className="primary-btn">Add New Product</Link>
                 </div>
             </div>
         </div>

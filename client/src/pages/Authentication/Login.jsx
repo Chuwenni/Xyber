@@ -5,13 +5,14 @@ import { useApp } from "../../Context/appContext"
 import axios from 'axios';
 
 export default function Login() {
+
     const [form, setForm] = useState({
         email: "",
         password: "",
         remember: false,
     });
 
-    const { user, fetchUser} = useApp();
+    const { user, fetchUser } = useApp();
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -33,7 +34,7 @@ export default function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            const response = await axios.post(`${server}/login`, form, {withCredentials: true});
+            const response = await axios.post(`${server}/login`, form, { withCredentials: true });
 
             const message = response.data.message;
             const type = response.data.type;
@@ -68,7 +69,7 @@ export default function Login() {
                         required
                     />
 
-                    
+
                     <div className="password-wrapper">
                         <input
                             type={showPassword ? "text" : "password"}

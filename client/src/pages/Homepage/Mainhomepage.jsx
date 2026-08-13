@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import "../../assets/MenuBar.css";
+import "../../assets/HomePage.css";
 import Products from '../../components/skeleton/Products'
 import Menubar from "../../layouts/Menubar";
 import { useApp } from "../../Context/appContext";

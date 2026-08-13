@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useErrorHandler} from "../utils/useErrorHandler.js"
+import { useErrorHandler} from "../hooks/useErrorHandler.js"
 import { useToast } from "./ToastContext";
 
 const appContext = createContext();
