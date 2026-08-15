@@ -9,21 +9,20 @@ export default function ShopDashboard() {
     
     const { server } = useApp();
     const { showModal } = useToast();
-    const [shop, setShop] = useState({})
+    const [shop, setShop] = useState(null)
     const { handle } = useErrorHandler();
+    
     const fetchShop = async () => {
         try{
             const response = await axios.get(`${server}/getMyShop`, {
                 withCredentials: true
             })
             setShop(response.data.shopInfo)
-
-            showModal(response.data?.message, "ok", response.data?.type)
         }catch(error){
             handle(error, "modal")
         }
     }
-
+    
     useEffect(() => {
         fetchShop()
     }, [])

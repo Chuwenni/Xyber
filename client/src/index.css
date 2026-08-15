@@ -29,10 +29,6 @@ body{
     padding-top: 50px
 }
 
-#root > div{
-    margin-bottom: 50px;
-}
-
 .Formcontainer{
     width: 100%;
     height: 100%;

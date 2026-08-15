@@ -18,16 +18,16 @@ export const useErrorHandler = () => {
         const message = error.response?.data?.message
         switch (status) {
             case 401:
-                method(message, "warning");
+                method(message, method === showModal ? "ok" : "", "warning");
                 break;
             case 403:
-                method(message, "error");
+                method(message,method === showModal ? "ok" : "", "error");
                 break;
             case 404:
-                method(message, "error");
+                method(message,method === showModal ? "ok" : "", "error");
                 break;
             case 500:
-                method(message, "error");
+                method(message,method === showModal ? "ok" : "", "error");
                 break;
         }
     };

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"
 import { useToast } from "../../Context/ToastContext"
 import { useApp } from "../../Context/appContext"
 import { useErrorHandler } from "../../hooks/useErrorHandler"
@@ -15,16 +16,17 @@ export default function CreateProduct() {
 
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
+    const { server } = useApp()
+    const { showModal } = useToast();
+    const { handle } = useErrorHandler();
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         setProduct({
             ...product,
             [e.target.name]: e.target.value
         });
     };
-
-    const { server } = useApp()
-    const { showModal } = useToast();
-    const { handle } = useErrorHandler();
 
     const handleImage = (e) => {
 
@@ -59,6 +61,8 @@ export default function CreateProduct() {
                     withCredentials: true
                 })
             showModal(response.data?.message, "ok", response.data?.type)
+
+            navigate("/home/myShop/products", { replace: true })
         } catch (error) {
             handle(error, "modal")
         }

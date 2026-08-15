@@ -6,10 +6,10 @@ const Product = require("../models/productSchema")
 
 const getShop = async (req, res) => {
     try {
-        const user = req.user;
+        const user = await User.findOne({email: req.user.email})
 
         if (user.role == "customer") {
-            return res.status(403).json({ message: "Seller Only Page! \tCreate a Shop to be a Seller", type: "warning" })
+            return res.status(403).json({ message: "Seller Only Page! \tCreate a Shop to be a Seller", type: "warning", shopInfo: null })
         }
 
         const userShop = await Shop.findOne({ owner: user.email }).lean();
@@ -60,12 +60,10 @@ const createShop = async (req, res) => {
             return res.status(400).json({ message: "Can't Create The Shop!", type: "warning" })
         }
 
-        const updatedUserDB = User.findOneAndUpdate(
+        const updatedUserDB = await User.findOneAndUpdate(
             { email: user.email },
             { $set: { role: "seller" } }
         )
-
-        console.log(updatedUserDB)
 
         req.user = updatedUserDB;
 
@@ -147,4 +145,21 @@ const getShopProducts = async (req, res) => {
     return res.status(200).json({shopProducts})
 }
 
-module.exports = { getShop, createShop, createProduct, getAllProducts, getShopProducts };
+const getAllShops = async (req,res) => {
+    const allShops = await Shop.find().limit(10).lean()
+
+    if(!allShops){ 
+        return res.status(404).json({message: "No Shops found!", type: "error"})
+    }
+
+    const shops = await Promise.all(
+        allShops.map(async (shop) => {
+            const shopsImages = await Image.findOne({ user: shop.owner, type: "shop" });
+            return { ...shop, image: shopsImages };
+        })
+    );
+    console.log(shops)
+    return res.status(200).json({shops: shops})
+}
+
+module.exports = { getShop, createShop, createProduct, getAllProducts, getShopProducts, getAllShops };
