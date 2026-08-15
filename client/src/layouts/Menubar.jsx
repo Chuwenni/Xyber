@@ -1,5 +1,6 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import "../assets/HomePage.css";
+import logo from "../assets/xyber.png"
 import { useApp } from "../Context/appContext";
 import { useState, useRef, useEffect } from "react";
 import { useToast } from "../Context/ToastContext";
@@ -51,7 +52,7 @@ export default function Menubar() {
     return (
         <nav className="navbar">
 
-            <h2 className="logo">ShopEase</h2>
+            <Link className="logo" to="/home"><img src={logo} alt="Logo" /></Link>
 
             <div className="nav-links">
                 <NavLink to="/home" end>Home</NavLink>

@@ -4,11 +4,13 @@ import axios from "axios";
 import ShopSection from "../../layouts/shopDashboard";
 import { useApp } from "../../Context/appContext";
 import { useToast } from "../../Context/ToastContext";
+import useErrorHandler from "../../hooks/useErrorHandler";
 export default function ShopDashboard() {
     
-    const { user, server } = useApp();
-    const { showModal} = useToast();
+    const { server } = useApp();
+    const { showModal } = useToast();
     const [shop, setShop] = useState({})
+    const { handle } = useErrorHandler();
     const fetchShop = async () => {
         try{
             const response = await axios.get(`${server}/getMyShop`, {
@@ -16,19 +18,9 @@ export default function ShopDashboard() {
             })
             setShop(response.data.shopInfo)
 
+            showModal(response.data?.message, "ok", response.data?.type)
         }catch(error){
-            console.log(error.response)
-            if(error.response){
-                setShop(null)
-                switch(error.response.status){
-                    case 403:
-                        showModal(error.response.data.message, "ok", error.response.data.type)
-                        break
-                    case 401:
-                        showModal(error.response.data.message, "ok", error.reponse.data.type)
-                        break   
-                }
-            }
+            handle(error, "modal")
         }
     }
 

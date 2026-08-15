@@ -55,7 +55,7 @@ const ShopSection = ({ shop } = props) => {
                     </div>
                 </div>
                 <div className="shop-actions">
-                    <Link to="/home/shop/products" className="secondary-btn">Manage Products</Link>
+                    <Link to="/home/myShop/products" className="secondary-btn">Manage Products</Link>
                     <Link to="/home/myShop/createProduct" className="primary-btn">Add New Product</Link>
                 </div>
             </div>

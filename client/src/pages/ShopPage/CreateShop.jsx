@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useApp } from "../../Context/appContext";
 import { useToast } from "../../Context/ToastContext";
+import { useErrorHandler } from "../../hooks/useErrorHandler"
 export default function CreateShop() {
 
     const [shopName, setShopName] = useState("");
@@ -11,7 +12,7 @@ export default function CreateShop() {
     const [preview, setPreview] = useState(null);
     const { server } = useApp();
     const { showToast, fetchUser } = useToast();
-
+    const { handle } = useErrorHandler();
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
@@ -42,11 +43,11 @@ export default function CreateShop() {
             )
 
             await fetchUser();
-
-            showToast(response.data.message, response.data.type)
             
+            showToast(response.data.message, response.data.type)
+
         } catch (error) {
-            console.log(error)
+            handle(error, "modal")
         }
     };
 

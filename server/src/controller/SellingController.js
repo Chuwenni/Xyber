@@ -64,6 +64,12 @@ const createShop = async (req, res) => {
             { email: user.email },
             { $set: { role: "seller" } }
         )
+
+        console.log(updatedUserDB)
+
+        req.user = updatedUserDB;
+
+        return res.status(201).json({message: "Shop " + req.body.name + " Created!", type: "success"})
     } catch (error) {
         console.log(error)
     }
@@ -129,4 +135,16 @@ const getAllProducts = async (req, res) => {
     }
 }
 
-module.exports = { getShop, createShop, createProduct, getAllProducts };
+const getShopProducts = async (req, res) => {
+    const user = req.user
+
+    const shopProducts = await Product.find({owner: user.email})
+
+    if(!shopProducts){
+        return res.status(404).json({message: "No Products Found with User: " + user.email, type: "error"})
+    }
+
+    return res.status(200).json({shopProducts})
+}
+
+module.exports = { getShop, createShop, createProduct, getAllProducts, getShopProducts };

@@ -11,6 +11,7 @@ import ShopDashboard from "./pages/ShopPage/shopDashboard";
 import { AppContext } from "./Context/appContext";
 import CreateShop from "./pages/ShopPage/CreateShop";
 import CreateProduct from "./pages/ShopPage/Createproduct";
+import ShopProducts from "./pages/ShopPage/ShopProducts";
 function App() {
 
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="myShop" element={<ShopDashboard />} />
             <Route path="myShop/create" element={<CreateShop />} />
             <Route path="myShop/createProduct" element={<CreateProduct/>}/>
+            <Route path="myShop/products" element={<ShopProducts/>}/>
             <Route path="profile" element={<Dashboard />} />
             <Route path="profile/edit" element={<EditProfile />} />
           </Route>
