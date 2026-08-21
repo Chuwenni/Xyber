@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import {useToast} from '../../Context/ToastContext'
+import useErrorHandler from "../../hooks/useErrorHandler";
 
 export default function Register() {
 
@@ -12,8 +13,8 @@ export default function Register() {
         confirmPassword: ""
     });
 
-    const { showToast, durations } = useToast();
-
+    const { showModal, showLoading, hideLoading } = useToast();
+    const { handle } = useErrorHandler();
     const navigate = useNavigate();
 
     function handleChange(e) {
@@ -32,6 +33,7 @@ export default function Register() {
             return
         }
 
+        showLoading("Creating your Account....")
 
         try {
             const response = await axios.post(`${server}/register`, 
@@ -42,20 +44,17 @@ export default function Register() {
                     }
                 })
                 
-                const message = response.data.message;
-                const type = response.data.type;
-
-                if(response.data.type != "success"){
-                    showToast(message, type)
-                }else{
-                    showToast(message, type)
-                    setTimeout(()=>{
-                        navigate('/login', {replace: true})
-                    }, durations.success)
-                }
-              
-        } catch (err) {
-            showToast(err.message, 'error')
+            const message = response.data.message;
+            const type = response.data.type;
+                
+            if(showModal(message, "ok", type)){
+                navigate('/login', {replace: true})
+            }
+        } catch (error) {
+            handle(error, "modal")
+        }
+        finally{
+            hideLoading()
         }
     }
 

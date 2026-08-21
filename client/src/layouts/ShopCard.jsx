@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
 
 const ShopCard = ({ shop }) => {
+    const shopId = shop?._id?.toString?.() || shop?._id || shop?.id || "";
 
     return (
         <div className="shop-container">
             <div className="shop-grid">
-                <div className="shop-card" key={shop.id}>
+                <div className="shop-card" data-shop-id={shopId}>
                     <div className="shop-card-logo">
-                        <img src={shop.image.image} alt="shopImage" />
+                        {shop.image && <img src={shop.image.image || shop.image} alt={`${shop.shopName} logo`} />}
                     </div>
 
                     <div className="shop-card-content">
                         <h2>{shop.shopName}</h2>
-                        <p>{shop.ShopDescription}</p>
+                        <p>{shop.shopDescription}</p>
 
                         <div className="shop-card-meta">
                             <span>Sales: {shop.sales}</span>
@@ -20,7 +21,7 @@ const ShopCard = ({ shop }) => {
                         </div>
 
                         <Link
-                            to={`/home/shops/${shop.id}`}
+                            to={`/home/shops/${shopId}`}
                             className="dashboard-link"
                         >
                             View Shop

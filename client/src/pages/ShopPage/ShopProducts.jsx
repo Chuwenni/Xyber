@@ -27,10 +27,10 @@ const ShopProducts = () => {
     return(
         <div className="products-container">
 
-            {products.map((element, index) => (
+            {products.map((element) => (
                 <ProductCard
                     product={element}
-                    key={index}
+                    key={element?._id || element?.id}
                 />
             ))}
 

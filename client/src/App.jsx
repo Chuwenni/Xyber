@@ -15,6 +15,8 @@ import ShopProducts from "./pages/ShopPage/ShopProducts";
 import Cart from "./pages/ShopPage/Cart"
 import Shop from "./pages/ShopPage/Shop"
 import AccountSettings from "./pages/ShopPage/AccountSettings";
+import ProductView from "./pages/ShopPage/ProductView";
+import ShopView from "./pages/ShopPage/ShopView";
 function App() {
 
   return (
@@ -27,7 +29,9 @@ function App() {
           <Route path='/password' element={<ForgotPassword />} />
           <Route path="/home" element={<Homepage />}>
             <Route index element={<Products />} />
+            <Route path="products/:productId" element={<ProductView />} />
             <Route path="shops" element={<Shop />} />
+            <Route path="shops/:shopId" element={<ShopView />} />
             <Route path="myCart" element={<Cart/>} />
             <Route path="myShop" element={<ShopDashboard />} />
             <Route path="myShop/create" element={<CreateShop />} />

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "../../Context/ToastContext";
 import { useApp } from "../../Context/appContext"
 import axios from 'axios';
+import useErrorHandler from "../../hooks/useErrorHandler";
 
 export default function Login() {
 
@@ -12,12 +13,12 @@ export default function Login() {
         remember: false,
     });
 
-    const { user, fetchUser } = useApp();
+    const { user, fetchUser, server } = useApp();
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const { showToast, durations } = useToast();
-
+    const { showLoading, hideLoading, showModal } = useToast();
+    const { handle } = useErrorHandler();
     const navigate = useNavigate();
 
     function handleChange(e) {
@@ -29,27 +30,24 @@ export default function Login() {
         }));
     }
 
-    const server = import.meta.env.VITE_SERVER;
-
     async function handleSubmit(e) {
         e.preventDefault();
+        showLoading("Logging in....")
         try {
             const response = await axios.post(`${server}/login`, form, { withCredentials: true });
 
             const message = response.data.message;
             const type = response.data.type;
-
-            if (response.data.type != "success") {
-                showToast(message, type);
-            } else {
-                await fetchUser();
-                showToast(message, type);
-                setTimeout(() => {
-                    navigate('/home', { replace: true });
-                }, durations.success);
+            await fetchUser();
+            
+            if(showModal(message, "ok", type)){
+                navigate('/home', { replace: true })
             }
         } catch (error) {
-            showToast(error.message, "error");
+            handle(error, modal)
+        }
+        finally{
+            hideLoading()
         }
     }
 

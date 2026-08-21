@@ -1,22 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { useApp } from "../../Context/appContext";
+import { useToast } from "../../Context/ToastContext";
+import useErrorHandler from "../../hooks/useErrorHandler";
 
 export default function ProductView() {
     const { productId } = useParams();
-
-    const [product] = useState({
-        id: productId,
-        name: "Wireless Headphones",
-        description:
-            "Comfortable wireless headphones with clear sound, long battery life, and a lightweight design.",
-        price: 1299,
-        rating: 4.8,
-        stock: 24,
-        category: "Electronics",
-        image: "https://placehold.co/700x700/E0E0E0/666?text=Product"
-    });
+    const { server } = useApp();
+    const { showLoading, hideLoading } = useToast();
+    const { handle } = useErrorHandler();
+    const [product, setProduct] = useState(null);
 
     const [quantity, setQuantity] = useState(1);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            showLoading("Loading Product...");
+
+            try {
+                const response = await axios.get(`${server}/getProduct/${productId}`, {
+                    withCredentials: true
+                });
+
+                setProduct(response.data?.product);
+            } catch (error) {
+                handle(error, "toast");
+            } finally {
+                hideLoading();
+            }
+        };
+
+        fetchProduct();
+    }, [productId, server]);
+
+    if (!product) {
+        return (
+            <div className="product-view-page">
+                <div className="product-view-container">
+                    <Link to="/home" className="back-link">
+                        ← Back to Products
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    const stock = product.stocks ?? product.stock ?? 0;
 
     return (
         <div className="product-view-page">
@@ -50,7 +80,7 @@ export default function ProductView() {
                         </div>
 
                         <p className="product-stock">
-                            {product.stock} items available
+                            {stock} items available
                         </p>
 
                         <div className="product-quantity">
@@ -72,7 +102,7 @@ export default function ProductView() {
                                 <button
                                     onClick={() =>
                                         setQuantity((value) =>
-                                            Math.min(product.stock, value + 1)
+                                            Math.min(stock, value + 1)
                                         )
                                     }
                                 >

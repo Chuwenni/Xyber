@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useApp } from "../../Context/appContext";
 import { useToast } from "../../Context/ToastContext";
@@ -10,9 +10,10 @@ export default function CreateShop() {
     const [description, setDescription] = useState("");
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
-    const { server } = useApp();
-    const { showToast, fetchUser } = useToast();
+    const { server, fetchUser } = useApp();
+    const { showToast, showLoading, hideLoading, durations } = useToast();
     const { handle } = useErrorHandler();
+    const navigate = useNavigate();
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
@@ -31,6 +32,8 @@ export default function CreateShop() {
         form.append("name", shopName)
         form.append("desc", description)
 
+        showLoading("Creating your Shop..... Please wait...")
+
         try {
             const response = await axios.post(`${server}/newShop`,
                 form,
@@ -41,13 +44,16 @@ export default function CreateShop() {
                     }
                 }
             )
-
             await fetchUser();
-            
             showToast(response.data.message, response.data.type)
-
+            setTimeout(() =>{
+                navigate("/home/myShop", {replace: true})
+            }, durations.success)
         } catch (error) {
-            handle(error, "modal")
+            handle(error, "toast")
+        }
+        finally{
+            hideLoading()
         }
     };
 

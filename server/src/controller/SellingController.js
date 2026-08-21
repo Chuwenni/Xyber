@@ -3,6 +3,7 @@ const Shop = require("../models/shopSchema")
 const Image = require("../models/imageSchema");
 const User = require("../models/userSchema");
 const Product = require("../models/productSchema")
+const mongoose = require("mongoose")
 
 const getShop = async (req, res) => {
     try {
@@ -69,7 +70,7 @@ const createShop = async (req, res) => {
 
         return res.status(201).json({message: "Shop " + req.body.name + " Created!", type: "success"})
     } catch (error) {
-        console.log(error)
+        return res.status(500).json({message: error.message, type: "error"})
     }
 }
 
@@ -133,6 +134,75 @@ const getAllProducts = async (req, res) => {
     }
 }
 
+const getProduct = async (req, res) => {
+    try {
+        const { productId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return res.status(400).json({
+                message: "Invalid product ID",
+                type: "error"
+            });
+        }
+
+        const product = await Product.findById(productId).lean();
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found",
+                type: "error"
+            });
+        }
+
+        return res.status(200).json({ product });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Unable to load product",
+            type: "error"
+        });
+    }
+}
+
+const getShopById = async (req, res) => {
+    try {
+        const { shopId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(shopId)) {
+            return res.status(400).json({
+                message: "Invalid shop ID",
+                type: "error"
+            });
+        }
+
+        const shop = await Shop.findById(shopId).lean();
+
+        if (!shop) {
+            return res.status(404).json({
+                message: "Shop not found",
+                type: "error"
+            });
+        }
+
+        const [shopImage, products] = await Promise.all([
+            Image.findOne({ user: shop.owner, type: "shop" }).lean(),
+            Product.find({ owner: shop.owner }).lean()
+        ]);
+
+        return res.status(200).json({
+            shop: {
+                ...shop,
+                image: shopImage?.image || null
+            },
+            products
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Unable to load shop",
+            type: "error"
+        });
+    }
+}
+
 const getShopProducts = async (req, res) => {
     const user = req.user
 
@@ -162,4 +232,4 @@ const getAllShops = async (req,res) => {
     return res.status(200).json({shops: shops})
 }
 
-module.exports = { getShop, createShop, createProduct, getAllProducts, getShopProducts, getAllShops };
+module.exports = { getShop, createShop, createProduct, getAllProducts, getProduct, getShopById, getShopProducts, getAllShops };

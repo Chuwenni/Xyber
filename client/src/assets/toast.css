@@ -144,6 +144,42 @@
     background:#d4d4d4;
 }
 
+/* Loading */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, .75);
+    backdrop-filter: blur(2px);
+    z-index: 3000;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #dbeafe;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: loadingSpin .8s linear infinite;
+}
+
+.loading-message {
+    margin: 0;
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+@keyframes loadingSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media(max-width:500px) {
     .confirmation-modal {
         padding:25px 20px;

@@ -17,7 +17,7 @@ export default function CreateProduct() {
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
     const { server } = useApp()
-    const { showModal } = useToast();
+    const { showModal, showLoading, hideLoading } = useToast();
     const { handle } = useErrorHandler();
     const navigate = useNavigate();
 
@@ -54,17 +54,22 @@ export default function CreateProduct() {
         form.append("price", product.price);
         form.append("stock", product.stock);
         form.append("image", image);
+
+        showLoading("Creating Product...");
+
         try {
             const response = await axios.post(`${server}/newProduct`,
                 form,
                 {
                     withCredentials: true
                 })
-            showModal(response.data?.message, "ok", response.data?.type)
 
+            showModal(response.data?.message, "ok", response.data?.type)
             navigate("/home/myShop/products", { replace: true })
         } catch (error) {
             handle(error, "modal")
+        } finally {
+            hideLoading();
         }
     };
 

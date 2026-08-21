@@ -1,6 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import Toast from "../components/Notifications/toast";
 import Modal from "../components/Notifications/Modal";
+import Loading from "../components/Notifications/Loading";
 import "../assets/toast.css";
 
 const ToastContext = createContext();
@@ -27,6 +28,12 @@ export function ToastProvider({ children }) {
         type: "info",
         resolve: null
     });
+
+    const [loading, setLoading] = useState({
+        visible: false,
+        message: "Loading..."
+    });
+    const loadingCount = useRef(0);
 
     function showToast(message, type = "info") {
 
@@ -78,9 +85,35 @@ export function ToastProvider({ children }) {
         });
     }
 
+    function showLoading(message = "Loading...") {
+        loadingCount.current += 1;
+        setLoading({
+            visible: true,
+            message
+        });
+    }
+
+    function hideLoading() {
+        loadingCount.current = Math.max(0, loadingCount.current - 1);
+
+        if (loadingCount.current === 0) {
+            setLoading({
+                visible: false,
+                message: "Loading..."
+            });
+        }
+    }
+
     return (
         <ToastContext.Provider
-            value={{ showToast, durations, showModal, closeModal }}>
+            value={{
+                showToast,
+                durations,
+                showModal,
+                closeModal,
+                showLoading,
+                hideLoading
+            }}>
 
             {children}
 
@@ -96,6 +129,11 @@ export function ToastProvider({ children }) {
                 buttons={modal.buttons}
                 type={modal.type}
                 onClose={closeModal}
+            />
+
+            <Loading
+                visible={loading.visible}
+                message={loading.message}
             />
 
         </ToastContext.Provider>

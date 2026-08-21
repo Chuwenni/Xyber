@@ -23,8 +23,6 @@ export default function Shop() {
         }
     }
 
-    console.log(shops)
-
     useEffect(() => {
         fetchShops()
     },[])
@@ -39,8 +37,8 @@ export default function Shop() {
                 ?
                 <div>no Shops</div>
                 :  
-                shops.map((element , index) => (
-                    <ShopCard shop={element} key={index}/>
+                shops.map((element) => (
+                    <ShopCard shop={element} key={element?._id || element?.id}/>
                 ))   
             }
         </div>

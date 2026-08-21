@@ -220,6 +220,7 @@
 }
 
 .product-button {
+    display:block;
     width:100%;
     border:none;
     padding:12px;
@@ -227,6 +228,8 @@
     color:white;
     border-radius:8px;
     cursor:pointer;
+    text-align:center;
+    text-decoration:none;
     transition:.25s;
 }
 

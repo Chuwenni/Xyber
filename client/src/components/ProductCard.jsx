@@ -1,8 +1,14 @@
+import { Link } from "react-router-dom";
+
 const Products = ({product}) => {
+  const productId = product?._id?.toString?.() || product?._id || product?.id || "";
 
   return (
     <div className='products'>
-      <div className="product-card">
+      <div
+        className="product-card"
+        data-product-id={productId}
+      >
 
         <div className="product-image">
           <img src={product.image} alt={product.name} />
@@ -30,9 +36,12 @@ const Products = ({product}) => {
 
           </div>
 
-          <button className="product-button">
-            Add to Cart
-          </button>
+          <Link
+            to={`/home/products/${productId}`}
+            className="product-button"
+          >
+            View Product
+          </Link>
 
         </div>
 

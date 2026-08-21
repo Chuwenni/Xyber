@@ -58,16 +58,16 @@ const Register = async (req, res) => {
         const newUser = await user.save();
 
         if(newUser._id.length != 0){
-            return res.json({message: "Register Successful!", type: "sucess"})
+            return res.json({message: "Register Successful!", type: "success"})
         }
 
         return res.json({message: "Registered UnSuccessful! try again later.", type: "warning"})
 
     }catch(err){
         if(err.code === 11000){
-            const field = Object.keys(err.keyValue)[0]; // e.g., 'email'
+            const field = Object.keys(err.keyValue)[0];
             const value = err.keyValue[field];
-            return res.json({ 
+            return res.status(400).json({ 
                 message: `${field} '${value}' already exists.`,
                 type: "error"
             });

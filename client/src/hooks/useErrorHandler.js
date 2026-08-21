@@ -5,6 +5,7 @@ export const useErrorHandler = () => {
 
     const handle = (error, type) => {
         if (!error.response) {
+            showToast("Something went wrong. Please try again.", "error");
             return;
         }
         
@@ -17,17 +18,31 @@ export const useErrorHandler = () => {
     const CheckStatus = (status, error, method) => {
         const message = error.response?.data?.message
         switch (status) {
+            case 400:
             case 401:
-                method(message, method === showModal ? "ok" : "", "warning");
+                method === showModal
+                    ? method(message, "ok", "warning")
+                    : method(message, "warning");
                 break;
             case 403:
-                method(message,method === showModal ? "ok" : "", "error");
+                method === showModal
+                    ? method(message, "ok", "error")
+                    : method(message, "error");
                 break;
             case 404:
-                method(message,method === showModal ? "ok" : "", "error");
+                method === showModal
+                    ? method(message, "ok", "error")
+                    : method(message, "error");
                 break;
             case 500:
-                method(message,method === showModal ? "ok" : "", "error");
+                method === showModal
+                    ? method(message, "ok", "error")
+                    : method(message, "error");
+                break;
+            default:
+                method === showModal
+                    ? method(message || "Something went wrong.", "ok", "error")
+                    : method(message || "Something went wrong.", "error");
                 break;
         }
     };
